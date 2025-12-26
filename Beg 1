@@ -1,0 +1,29 @@
+import pandas as p
+import numpy as n
+import matplotlib.pyplot as m
+dataset=p.read_csv(Placement_BeginnerTask01.csv)
+dataset
+dataset=dataset.drop('StudentID',axis=1)
+dataset["ExtraCircularActivities"]=dataset["ExtraCircularActivities"].astype('category')
+dataset["PlacementTraining"]=dataset["PlacementTraining"].astype('category')
+dataset["Placement_Status"]=dataset["Placement_Status"].astype('category')
+dataset.dtypes
+dataset["ExtraCircularActivities"]=dataset["ExtraCircularActivities"].cat.codes
+dataset["PlacementTraining"]=dataset["PlacementTraining"].cat.codes
+dataset["Placement_Status"]=dataset["Placement_Status"].cat.codes
+dataset
+X=dataset.iloc[:, :-1].values
+Y=dataset.iloc[:, -1].values
+Y
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size=0.2)
+dataset.head()
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(random_state=0, solver='lbfgs',max_iter=1000).fit(X_train, Y_train)
+clf.score(X_test, Y_test)
+Y_pred=clf.predict(X_test)
+Y_pred
+from sklearn.metrics import confusion_matrix,accuracy_score
+print(accuracy_score(Y_test, Y_pred))
+print(confusion_matrix(Y_test, Y_pred))
+print("Model Score:",clf.score(X_test, Y_test))
